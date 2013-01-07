@@ -1,0 +1,8 @@
+<?xml version="1.0" ?> 
+<project default="build">
+
+	<target name="build">
+		<echo message="Build done." level="info" />
+	</target>
+		
+</project>
