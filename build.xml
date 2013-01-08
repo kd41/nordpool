@@ -2,7 +2,7 @@
 <project default="build">
 
 	<target name="build">
-		<echo message="Build done." level="info" />
+		<echo message="Build done. Check it..." level="info" />
 	</target>
 		
 </project>
