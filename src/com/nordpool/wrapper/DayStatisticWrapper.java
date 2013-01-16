@@ -22,7 +22,6 @@ public class DayStatisticWrapper {
     Object[][] data = getTableData2();
     int rows = data.length - 1;
     int colums = data[0].length;
-    System.out.println("rows: " + rows + " colums: " + colums);
     String[][] returnedData = new String[rows][colums];
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < colums; j++) {

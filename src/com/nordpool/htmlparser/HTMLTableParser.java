@@ -18,11 +18,12 @@ import java.util.List;
 
 public class HTMLTableParser extends HTMLEditorKit.ParserCallback {
 
+  private static final String NO_SPACE_BREAK = "\u00A0";
+
   private boolean encounteredATableRow = false;
   private boolean isTableHeader = false;
   private DayStatistic dayStatistic = new DayStatistic();
   private ParserSettings settings;
-  private int rowCount = 0;
   private int columnCount = 0;
   private String timePeriod;
   List<ElectrostationStatistic> electrostationStatistics = new LinkedList<ElectrostationStatistic>();
@@ -36,7 +37,7 @@ public class HTMLTableParser extends HTMLEditorKit.ParserCallback {
   public void handleText(char[] data, int pos) {
     String text = new String(data);
 
-    if (StringUtils.isEmpty(text) || "\u00A0".equals(text)) {
+    if (StringUtils.isEmpty(text) || NO_SPACE_BREAK.equals(text)) {
       return;
     }
 
@@ -60,7 +61,7 @@ public class HTMLTableParser extends HTMLEditorKit.ParserCallback {
           dayStatistic.setHeader(text);
         }
 
-        if (StringUtils.isNotEmpty(text) && !"\u00A0".equals(text) && !text.equals(dayStatistic.getHeader())) {
+        if (StringUtils.isNotEmpty(text) && !NO_SPACE_BREAK.equals(text) && !text.equals(dayStatistic.getHeader())) {
           ElectrostationStatistic es = new ElectrostationStatistic();
           es.setName(text);
           electrostationStatistics.add(es);
@@ -72,8 +73,6 @@ public class HTMLTableParser extends HTMLEditorKit.ParserCallback {
       }
     }
 
-    // System.out.println("text: " + text + "; rowCount: " + rowCount + "; columnCount: " + columnCount + "; isTableHeader: " + isTableHeader +
-    // "; timePeriod= " + timePeriod);
     columnCount++;
   }
 
@@ -81,7 +80,6 @@ public class HTMLTableParser extends HTMLEditorKit.ParserCallback {
   public void handleStartTag(HTML.Tag tag, MutableAttributeSet a, int pos) {
     if (tag == HTML.Tag.TR) {
       encounteredATableRow = true;
-      rowCount++;
     } else if (tag == HTML.Tag.TH) {
       isTableHeader = true;
     }

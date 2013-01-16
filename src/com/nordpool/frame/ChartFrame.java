@@ -16,23 +16,25 @@ import java.awt.Color;
 
 public class ChartFrame {
 
+  private String title;
   private double[][] data;
 
-  public ChartFrame(double[][] data) {
+  public ChartFrame(String title, double[][] data) {
+    this.title = title;
     this.data = data;
   }
 
   public void show() {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        JFrame frame = new JFrame("Charts");
+        JFrame frame = new JFrame(title);
 
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
         XYDataset ds = createDataset();
-        JFreeChart chart = ChartFactory.createXYLineChart("Test Chart", "x", "y", ds, PlotOrientation.VERTICAL, true, true, false);
+        JFreeChart chart = ChartFactory.createXYLineChart(title, "Time period", "Price (EUR)", ds, PlotOrientation.VERTICAL, true, true, false);
 
         final XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.lightGray);
@@ -53,7 +55,7 @@ public class ChartFrame {
 
   private XYDataset createDataset() {
     DefaultXYDataset ds = new DefaultXYDataset();
-    ds.addSeries("series1", getData());
+    ds.addSeries(title + " chages between " + getBetween(), getData());
     return ds;
   }
 
@@ -68,6 +70,18 @@ public class ChartFrame {
 
   public void setData(double[][] data) {
     this.data = data;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  private String getBetween() {
+    return getData()[2][2] + "-" + getData()[0][getData()[0].length - 1];
   }
 
 }

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class FileReader {
-  static String readFileAsString(String filename) {
+  public static String readFileAsString(String filename) {
     File file = new File(filename);
     try {
       byte[] bytes = Files.readAllBytes(file.toPath());

@@ -9,11 +9,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class TableFrame {
-  private String[] titles = new String[] { "Name", "Vage" };
-  private String[][] data = new String[][] { { "Donald Duck", "100" }, { "Mickey Mouse", "120" } };
+  private String header;
+  private String[] titles;
+  private String[][] data;
+
+  public TableFrame(String header) {
+    this.header = header;
+  }
 
   public void show() {
-    JFrame frame = new JFrame("JFrame and JTable example 2");
+    JFrame frame = new JFrame(header);
     frame.setSize(1500, 600);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -25,7 +30,6 @@ public class TableFrame {
       };
     };
     JScrollPane scrollPane = new JScrollPane(table);
-
     table.setColumnSelectionAllowed(true);
     table.setRowSelectionAllowed(false);
 
@@ -36,23 +40,20 @@ public class TableFrame {
           final JTable table = (JTable) e.getSource();
           final int row = table.getSelectedRow();
           final int column = table.getSelectedColumn();
+          final String title = (String) table.getColumnModel().getColumn(column).getHeaderValue();
 
-          System.out.println("Selected: row=" + row + ", column=" + column);
+          System.out.println("Selected: row=" + row + ", column=" + column + "; title=" + title);
 
           if (column != 0) {
-
             double[][] data = new double[2][table.getModel().getRowCount()];
-
             for (int i = 0; i < table.getRowCount(); i++) {
               data[0][i] = i;
               data[1][i] = Double.parseDouble(table.getValueAt(i, column).toString());
             }
 
-            ChartFrame chartFrame = new ChartFrame(data);
+            ChartFrame chartFrame = new ChartFrame(title, data);
             chartFrame.show();
-
           }
-
         }
       }
     });
@@ -75,5 +76,13 @@ public class TableFrame {
 
   public void setData(String[][] data) {
     this.data = data;
+  }
+
+  public String getHeader() {
+    return header;
+  }
+
+  public void setHeader(String header) {
+    this.header = header;
   }
 }

@@ -18,8 +18,6 @@ public class Program {
 
     String fileSource = FileReader.readFileAsString(filesPaht + "prices.html");
 
-    // System.out.println(fileSource);
-
     HTMLTableParser tableParser = new HTMLTableParser(new ParserSettings(props.getDateFormat()));
     try (Reader reader = new StringReader(fileSource)) {
       HTMLEditorKit.Parser parser = new ParserDelegator();
@@ -29,7 +27,7 @@ public class Program {
 
     DayStatisticWrapper dayStatWrapper = new DayStatisticWrapper(tableParser.getDayStatistic());
 
-    TableFrame tableFrame = new TableFrame();
+    TableFrame tableFrame = new TableFrame(tableParser.getDayStatistic().getHeader());
     tableFrame.setTitles(dayStatWrapper.getTableTitles());
     tableFrame.setData(dayStatWrapper.getTableData());
     tableFrame.show();
