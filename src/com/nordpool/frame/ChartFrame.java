@@ -16,25 +16,23 @@ import java.awt.Color;
 
 public class ChartFrame {
 
-  private String title;
-  private double[][] data;
+  private ChartSettings settings;
 
-  public ChartFrame(String title, double[][] data) {
-    this.title = title;
-    this.data = data;
+  public ChartFrame(ChartSettings settings) {
+    this.settings = settings;
   }
 
   public void show() {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        JFrame frame = new JFrame(title);
+        JFrame frame = new JFrame(settings.getTitle());
 
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
         XYDataset ds = createDataset();
-        JFreeChart chart = ChartFactory.createXYLineChart(title, "Time period", "Price (EUR)", ds, PlotOrientation.VERTICAL, true, true, false);
+        JFreeChart chart = ChartFactory.createXYLineChart(settings.getTitle(), "Time period", "Price (EUR)", ds, PlotOrientation.VERTICAL, true, true, false);
 
         final XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.lightGray);
@@ -47,7 +45,6 @@ public class ChartFrame {
         plot.setRenderer(renderer);
 
         ChartPanel cp = new ChartPanel(chart);
-
         frame.getContentPane().add(cp);
       }
     });
@@ -55,33 +52,8 @@ public class ChartFrame {
 
   private XYDataset createDataset() {
     DefaultXYDataset ds = new DefaultXYDataset();
-    ds.addSeries(title + " chages between " + getBetween(), getData());
+    ds.addSeries(settings.getTitle() + " chages between " + settings.getBetween(), settings.getData());
     return ds;
-  }
-
-  public double[][] getData() {
-    if (data == null) {
-      double[][] defaultData = { { 0.1, 0.2, 0.3 }, { 1, 2, 3 } };
-      return defaultData;
-    }
-
-    return data;
-  }
-
-  public void setData(double[][] data) {
-    this.data = data;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  private String getBetween() {
-    return getData()[2][2] + "-" + getData()[0][getData()[0].length - 1];
   }
 
 }

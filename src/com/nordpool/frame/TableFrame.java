@@ -51,7 +51,10 @@ public class TableFrame {
               data[1][i] = Double.parseDouble(table.getValueAt(i, column).toString());
             }
 
-            ChartFrame chartFrame = new ChartFrame(title, data);
+            String endDate = (String) table.getModel().getValueAt(0, 0);
+            String startDate = (String) table.getModel().getValueAt(table.getModel().getRowCount() - 1, 0);
+
+            ChartFrame chartFrame = new ChartFrame(new ChartSettings(title, data, startDate, endDate));
             chartFrame.show();
           }
         }
